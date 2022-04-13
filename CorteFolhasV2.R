@@ -2,16 +2,16 @@ library(stringr)
 library(EBImage)
 
 
-###### DEFINIR diretÛrio onde est„o as imagens #####
+###### DEFINIR diret√≥rio onde est√£o as imagens #####
 
-pasta= "C:/Users/HP/Google Drive/R/gitCorteFolhas/" # colocar aqui a pasta com a espÈcie que
+pasta= "C:/Users/HP/Google Drive/R/gitCorteFolhas/" # colocar aqui a pasta com a esp√©cie que
 ## vc quer analisar, 
-## mas colocar o endereÁo ******* SEM o "/ind" *******, 
+## mas colocar o endere√ßo ******* SEM o "/ind" *******, 
 ## porque vou usar o "/ind" logo abaixo
 
 file.namesF <- list.files(pasta, pattern = "*.jpg",
-                          full.names = TRUE, recursive= FALSE) ## selecionando sÛ o que È ".jpg" e pegando
-## o que est· dentro de cada subpasta
+                          full.names = TRUE, recursive= FALSE) ## selecionando s√≥ o que √© ".jpg"
+## sem pegar o que estiver dentro de subpastas
 
 
 
@@ -22,7 +22,7 @@ cortePB= function(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 3){
   imgBruta= readImage(CaminhoImg) ## carregando a figura
   #display(imgBruta)
   
-  print("calculando 'threshold' para m·scara")
+  print("calculando 'threshold' para m√°scara")
   
   for(i in seq(from= threshMin, to= threshMax, by=1/255)){ ## aqui, funcao para achar o threshold
     ## do jeito que o ImageJ faz (https://imagej.nih.gov/ij/docs/faqs.html#auto) quando vou em 
@@ -55,25 +55,25 @@ cortePB= function(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 3){
   fig= imageData(channel(imgBruta, mode="blue"))
   fig<- 1-fig
   fig[fig < thresh] <- 0	
-  fig[fig >= thresh] <- 1 ### usando o vaor de threshold para criar m·scara bin·ria (P & B)
+  fig[fig >= thresh] <- 1 ### usando o vaor de threshold para criar m√°scara bin√°ria (P & B)
  
   return(fig)
-  print("M·scara criada")
-} ## funÁ„o que transforma
-## a imagem colorida em preto e branco. N„o mexer dentro da funÁ„o
+  print("M√°scara criada")
+} ## fun√ß√£o que transforma
+## a imagem colorida em preto e branco. N√£o mexer dentro da fun√ß√£o
 
-TESTE= cortePB(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 11) ## colocar um valor mÌnimo e m·ximo
-## entre 0 e 1 para procurar valores limites (para definir o que È preto e branco) na imagem
-## se n„o tiver certeza do que usar, deixar com os valores padr„o (ou sem esses argumentos),
+TESTE= cortePB(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 11) ## colocar um valor m√≠nimo e m√°ximo
+## entre 0 e 1 para procurar valores limites (para definir o que √© preto e branco) na imagem
+## se n√£o tiver certeza do que usar, deixar com os valores padr√£o (ou sem esses argumentos),
 ## que funcionam bem para folhas na maioria das vezes.
 ## o ultimo argumento, "pincel", serve para tirar irregularidades
 display(TESTE)
 
-###### FUNCAO PARA RETIRAR OBJETOS QUE SIRVAM DE ESCALA, COMO R…GUAS ###### 
+###### FUNCAO PARA RETIRAR OBJETOS QUE SIRVAM DE ESCALA, COMO R√âGUAS ###### 
 
-#### caso as imagens escaneadas tiverem algo para servir de escala (como uma rÈgua) escaneada
+#### caso as imagens escaneadas tiverem algo para servir de escala (como uma r√©gua) escaneada
 #### juntamente com as folhas, rodar daqui para baixo. Para funcionar, precisa ser um objeto comprido
-#### de preferÍncia do tamanho do suporte em que est„o as folhas, como no exemplo das imagens
+#### de prefer√™ncia do tamanho do suporte em que est√£o as folhas, como no exemplo das imagens
 
 corteRegua = function(Imagem, LadoRegua) {
   
@@ -81,12 +81,12 @@ corteRegua = function(Imagem, LadoRegua) {
   for(i in 1:nrow(Imagem)){
     num= i
     SomaPixelsVertical[i]= sum(Imagem[num,])
-    } ## calculo da soma das linhas (eixo X) da imagem. Objetos para escala, como rÈgua
-  ## s„o compridos, ent„o ter„o soma grande, provavelmente maior que a das folhas
+    } ## calculo da soma das linhas (eixo X) da imagem. Objetos para escala, como r√©gua
+  ## s√£o compridos, ent√£o ter√£o soma grande, provavelmente maior que a das folhas
   
   
-  if(missing(LadoRegua)){LadoRegua= "esquerda"} ## comportamento "padr„o" È procurar a 
-  ## rÈgua no lado ESQUERDO da imagem.
+  if(missing(LadoRegua)){LadoRegua= "esquerda"} ## comportamento "padr√£o" √© procurar a 
+  ## r√©gua no lado ESQUERDO da imagem.
   
   if(grepl("dir", LadoRegua, ignore.case=TRUE)){
     Imagem=rotate(Imagem, 180)
@@ -97,32 +97,32 @@ corteRegua = function(Imagem, LadoRegua) {
   
   SomaPixelsVertical= SomaPixelsVertical[c(1:(length(SomaPixelsVertical)*0.2))] ## aqui,
   ## restringindo o vetor com as somas de pixel para 6% do tamanho dele
-  ## para melhorar as chances de considerar apenas a ·rea que a rÈgua est· na
+  ## para melhorar as chances de considerar apenas a √°rea que a r√©gua est√° na
   ## parte logo abaixo
   
   maxRegua=ifelse(length(which(SomaPixelsVertical == max(SomaPixelsVertical)))==1,
                   which(SomaPixelsVertical == max(SomaPixelsVertical)), 
                   0) 
-  ## Ìndice do valor m·ximo se tiver 1 pixel de largura (ser· a rÈgua), caso contr·rio, provavelmente È 
-  ## parte de folha e ser· ignorado, recebendo o valor de 0
+  ## √≠ndice do valor m√°ximo se tiver 1 pixel de largura (ser√° a r√©gua), caso contr√°rio, provavelmente √© 
+  ## parte de folha e ser√° ignorado, recebendo o valor de 0
   
   if(maxRegua != 0){
     
     ReguaFundo= sort(c(maxRegua,
-                       which(SomaPixelsVertical < length(SomaPixelsVertical)*0.5))) ## vetor com Ìndices de 
-    ## valores baixos E o valor da rÈgua, ordenado de forma crescente
-    ReguaUm= which(ReguaFundo == maxRegua)+3 ## pegando o Ìndice do valor seguinte ao m·ximo (que ser· o primeiro
-    ## valor pequeno depois da rÈgua)
+                       which(SomaPixelsVertical < length(SomaPixelsVertical)*0.5))) ## vetor com √≠ndices de 
+    ## valores baixos E o valor da r√©gua, ordenado de forma crescente
+    ReguaUm= which(ReguaFundo == maxRegua)+3 ## pegando o √≠ndice do valor seguinte ao m√°ximo (que ser√° o primeiro
+    ## valor pequeno depois da r√©gua)
     
     ReguaUm= ifelse(ReguaUm >= length(ReguaFundo), 
                     length(ReguaFundo),
                     ReguaUm)[1]
     
-    corte= seq(from=1, to=ReguaFundo[ReguaUm]) ## criando uma sequÍncia de 1 atÈ o primeiro valor pequeno
-    ## depois da rÈgua, usando como base os Ìndices obtidos acima
+    corte= seq(from=1, to=ReguaFundo[ReguaUm]) ## criando uma sequ√™ncia de 1 at√© o primeiro valor pequeno
+    ## depois da r√©gua, usando como base os √≠ndices obtidos acima
   }
   #print(i)
-  if(sum(corte) != 0){ ## caso n„o tenha nada para cortar
+  if(sum(corte) != 0){ ## caso n√£o tenha nada para cortar
     Imagem = as.matrix(Imagem[-corte,])} else {Imagem= Imagem}
 
   if(grepl("dir", LadoRegua, ignore.case=TRUE)){return(rotate(Imagem,180))}
@@ -130,21 +130,21 @@ corteRegua = function(Imagem, LadoRegua) {
   Imagem= erode(Imagem, kern= makeBrush(size= 7, shape="Gaussian", ))
   
   return(Imagem)
-  print("RÈgua removida")
+  print("R√©gua removida")
   
-} ## essa funcao retorna um valor de corte (na vari·vel "corte"), que È o Ìndice  que tem o valor m·ximo da rÈgua
-## verifica se o Ìndice est· do lado direito ou esquerdo da figura
+} ## essa funcao retorna um valor de corte (na vari√°vel "corte"), que √© o √≠ndice  que tem o valor m√°ximo da r√©gua
+## verifica se o √≠ndice est√° do lado direito ou esquerdo da figura
 ## e o usa para cortar a imagem (se estiver do lado esquerdo, corta do lado esquerdo, se do direito,
-## corta do lado direito). N„o mexer dentro da funÁ„o
+## corta do lado direito). N√£o mexer dentro da fun√ß√£o
 
 TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda")
 ## na funcao acima, o ultimo comando indica o lado que esta o objeto que serve como escala
 ## se o argumento nao for colocado (ou tiver a palavra "esquerda"), a funcao vai rodar por
-## padrao considerando que o objetco est· no lado esquerdo da imagem
-display(TESTE2) ## visualizar imagem sem a rÈgua de escala
+## padrao considerando que o objetco est√° no lado esquerdo da imagem
+display(TESTE2) ## visualizar imagem sem a r√©gua de escala
 
 ###### FUNCAO PARA RETIRAR FAIXAS QUE TENHAM APARECIDO DURANTE O ESCANEAMENTO (E.G. QUANDO ###### 
-###### O SUPORTE PARA AS FOLHAS … MENOR QUE O VIDRO DO SCANNER)  
+###### O SUPORTE PARA AS FOLHAS √â MENOR QUE O VIDRO DO SCANNER)  
 
 corteFaixa = function(Imagem, PosicaoFaixa) {
   
@@ -152,11 +152,11 @@ corteFaixa = function(Imagem, PosicaoFaixa) {
   for(i in 1:ncol(Imagem)){
     num= i
     SomaPixelsHorizontal[i]= sum(Imagem[,num]) ## somando as linhas na horizontal
-  } ## funcao para calcular as somas das colunas (eixo Y), mesmo raciocÌnio
-  ## usado para os objetos de escala, na funÁ„o acima
+  } ## funcao para calcular as somas das colunas (eixo Y), mesmo racioc√≠nio
+  ## usado para os objetos de escala, na fun√ß√£o acima
   
   
-  if(missing(PosicaoFaixa)){PosicaoFaixa= "cima"} ## comportamento "padr„o" È procurar a 
+  if(missing(PosicaoFaixa)){PosicaoFaixa= "cima"} ## comportamento "padr√£o" √© procurar a 
   ## faixa no lado DE CIMA da imagem.
   
   if(grepl("bai", PosicaoFaixa, ignore.case=TRUE)){
@@ -187,18 +187,18 @@ corteFaixa = function(Imagem, PosicaoFaixa) {
   return(Imagem)
   print("Faixa removida")
   
-} ## funcao para tirar faixas contÌnuas da imagem
+} ## funcao para tirar faixas cont√≠nuas da imagem
 ## na parte inferior ou superior. A faixa deve ocupar a imagem na horizontal quase completamente para 
-## a funcao funcionar corretamente. N„o mexer dentro da funÁ„o
+## a funcao funcionar corretamente. N√£o mexer dentro da fun√ß√£o
 
 
 TESTE3= corteFaixa(TESTE2, PosicaoFaixa="cima")
-## na funcao acima, no argumento PosicaoFaixa, se estiver com "baixo", a faixa ser· procurada na parte
-## de baixo da imagem, se estiver com "cima" ou vazio, a faixa ser· procurada na parte de cima da imagem
-display(TESTE3) ## visualizar imagem sem a rÈgua de escala
+## na funcao acima, no argumento PosicaoFaixa, se estiver com "baixo", a faixa ser√° procurada na parte
+## de baixo da imagem, se estiver com "cima" ou vazio, a faixa ser√° procurada na parte de cima da imagem
+display(TESTE3) ## visualizar imagem sem a r√©gua de escala
 
-#### AP”S A FOTO TER SIDO TRATADA (OU SEJA, OS OBJETOS QUE SERVE COMO ESCALA RETIRADOS E AS FAIXAS)
-#### EM BRANCO), A PARTE ABAIXO DO SCRIPT CONTA OS OBJETOS QUE EST√O NA IMAGEM
+#### AP√ìS A FOTO TER SIDO TRATADA (OU SEJA, OS OBJETOS QUE SERVE COMO ESCALA RETIRADOS E AS FAIXAS)
+#### EM BRANCO), A PARTE ABAIXO DO SCRIPT CONTA OS OBJETOS QUE EST√ÉO NA IMAGEM
 #### 
 #### 
 #### 
@@ -210,15 +210,15 @@ obJetosNumero= function(Imagem){
   caract= sort(table(label), decreasing= TRUE)[-1]
   
   folhasNumero= sort(caract[caract > max(caract)*0.05], decreasing= TRUE)
-  ## aqui retirando o que È provavelmente defeito (considerei como sujeira o que tivesse menos de 5%
+  ## aqui retirando o que √© provavelmente defeito (considerei como sujeira o que tivesse menos de 5%
   ## do tamanho do objeto maior da imagem, em pixels)
   ## ou sujeira na foto.
   
   return(folhasNumero)
   
 } ## funcao para identificar os objetos da imagem em PB (ja sem regua)
-## e numerar cada um e j· retirar os objetos que n„o s„o folha (defeitos na foto e etc). N„o mexer
-## dentro da funÁ„o
+## e numerar cada um e j√° retirar os objetos que n√£o s√£o folha (defeitos na foto e etc). N√£o mexer
+## dentro da fun√ß√£o
 
 numeracaoObjetos= obJetosNumero(TESTE3)
 numeracaoObjetos ## objetos encontrados (desconsiderando sujeiras)
@@ -242,7 +242,7 @@ selecOBJT= function(ImgNumerada, NObj){
   #return(corte)
   
   mt= matrix(nrow= nrow(corte), ncol= ncol(corte))
-  for(i in 1:nrow(corte)){ ## criando uma matriz substituindo tudo o que n„o seja o objeto
+  for(i in 1:nrow(corte)){ ## criando uma matriz substituindo tudo o que n√£o seja o objeto
     ## especificado em "n" / "num" por 0
     
     for(j in 1:ncol(corte)){
@@ -265,11 +265,11 @@ selecOBJT= function(ImgNumerada, NObj){
   return(mt)
   
 } ## funcao para cortar a imagem
-## para cada um dos objetos da imagem numerada ImgNumerada È a IMAGEM
+## para cada um dos objetos da imagem numerada ImgNumerada √© a IMAGEM
 ## com os objetos numerados obtidos com a funcao "bwlabel" acima
-## e NObj È o VETOR com os n˙meros de objetos e
-## ·rea (em pixels) obtidos com a funcao "obJetosNumero", acima.
-## N„o mexer dentro da funÁ„o
+## e NObj √© o VETOR com os n√∫meros de objetos e
+## √°rea (em pixels) obtidos com a funcao "obJetosNumero", acima.
+## N√£o mexer dentro da fun√ß√£o
 
 TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[1])
 display(TESTE4) ## testando com uma imagem apenas, no segundo argumento
@@ -299,8 +299,8 @@ for(i in 1:length(numeracaoObjetos)){ ## loop para cortar cada um dos objetos da
   
 }
 
-#### LOOP para manipular e cortar todas as fotos de um diretÛrio de uma vez (pode n„o ser recomendado) ####
-#### caso as imagens sejam muito vari·veis, por exemplo, com escalas em diferentes lugares
+#### LOOP para manipular e cortar todas as fotos de um diret√≥rio de uma vez (pode n√£o ser recomendado) ####
+#### caso as imagens sejam muito vari√°veis, por exemplo, com escalas em diferentes lugares
 ####
 ####
 ####
