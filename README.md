@@ -4,6 +4,7 @@ Processa imagens de folhas escaneadas. Limpa as imagens, corta (caso haja mais d
 Script feito por causa de demandas de conhecidos. Dividido em **duas partes**.
 
 ### Primeira parte: para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
+*arquivo: CorteFolhasV2.R*
 
 1. **CortePB**: Criar uma máscara em Preto e Branco a partir da imagem colorida.
 2. **corteRegua**: Cortar objetos que servem de escala para a imagem. No caso que vivenciei, algumas imagens tinham uma régua de 30cm no lado esquerdo, que foi escaneada juntamente com as folhas para servir de escala. Essa funcao retira a régua da imagem.
@@ -21,5 +22,6 @@ No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e c
 ---
 
 ### A segunda parte: para cálculo da área folias, em cm²
+*arquivo: CalculoAreaFoliar.R*
 
 1. **AreaFoliar**: Calcula a área foliar (em cm²) e salva em um arquivo ".txt". É **importante** usar o valor de **DPI** (*dots per inch*) correto para o cálculo. Quando as imagens forem ser escaneadas, geralmente o usuário pode escolher esse valor. Se não souber qual é ele, clicar com o botão direito em uma imagem e ir em "detalhes". Lá esse valor é informado. **Contudo**, se a imagem foi processada em algum programa, dependendo do programa e do que tiver sido feito, esse valor de DPI terá sido alterado e para o cálculo correto, precisa ser usado o valor **inicial**, que foi usado para o escaneamento da imagem.
