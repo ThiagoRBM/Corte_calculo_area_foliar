@@ -4,7 +4,10 @@ Processa imagens de folhas escaneadas. Limpa as imagens, corta (caso haja mais d
 Script feito por causa de demandas de amigos. Dividido em **duas partes**.
 
 ### Primeira parte: para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
-*arquivo: CorteFolhasV2.R*
+*arquivo: *
+
+*arquivo: <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/CorteFolhasV2.R">CorteFolhasV2.R</a>*
+
 
 1. **cortePB**: Criar uma máscara em Preto e Branco a partir da imagem colorida.
 2. **corteRegua**: Cortar objetos que servem de escala para a imagem. No caso que vivenciei, algumas imagens tinham uma régua de 30cm no lado esquerdo, que foi escaneada juntamente com as folhas para servir de escala. Essa funcao retira a régua da imagem.
