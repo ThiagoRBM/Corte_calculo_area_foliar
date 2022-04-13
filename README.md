@@ -1,5 +1,6 @@
 # Corte_calculo_area_foliar
-Processa imagens de folhas escaneadas. Limpa as imagens, corta (caso haja mais de uma folha no mesmo arquivo), cria máscara em preto e branco e salva automaticamente. Calcula as áreas foliares (em cm²) e salva em arquivo ".txt". Imagens para exemplo no arquivo <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/FolhasInicial.rar">FolhasInicial.rar</a>*
+Processa imagens de folhas escaneadas. Limpa as imagens, corta (caso haja mais de uma folha no mesmo arquivo), cria máscara em preto e branco e salva automaticamente. Calcula as áreas foliares (em cm²) e salva em arquivo ".txt". 
+**Imagens para exemplo no arquivo <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/FolhasInicial.rar">FolhasInicial.rar</a>**
 
 Script feito por causa de demandas de amigos. Dividido em **duas partes**.
 
