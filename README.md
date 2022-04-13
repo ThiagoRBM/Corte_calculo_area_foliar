@@ -3,7 +3,7 @@ Processa imagens de folhas escaneadas. Limpa as imagens, corta (caso haja mais d
 
 Script feito por causa de demandas de conhecidos. Dividido em **duas partes**.
 
-## A primeira parte é para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
+### Primeira parte: para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
 
 1. Criar uma máscara em Preto e Branco a partir da imagem colorida: **CortePB**
 2. Cortar objetos que servem de escala para a imagem. No caso que vivenciei, algumas imagens tinham uma régua de 30cm no lado esquerdo, que foi escaneada juntamente com as folhas para servir de escala. Essa funcao retira a régua da imagem. Função: **corteRegua**
@@ -15,6 +15,10 @@ Após as funções isoladas, coloquei um loop que usa todas as funções, na ord
 
 No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e como fica após usar as funções acma:
 
+![My Image](Exemplo.JPG)
+
 ---
 
-## A segunda parte
+### A segunda parte: para cálculo da área folias, em cm²
+
+A segunda parte tem apenas uma função, que calcula a área foliar (em cm²) e salva em um arquivo ".txt". É **importante** usar o valor de **DPI** (*dots per inch*) correto para o cálculo. Quando as imagens forem ser escaneadas, geralmente o usuário pode escolher esse valor. Se não souber qual é ele, clicar com o botão direito em uma imagem e ir em "detalhes". Lá esse valor é informado. **Contudo**, se a imagem foi processada em algum programa, dependendo do programa e do que tiver sido feito, esse valor de DPI terá sido alterado e para o cálculo correto, precisa ser usado o valor **inicial**, que foi usado para o escaneamento da imagem.
