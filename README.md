@@ -16,6 +16,7 @@ Após as funções isoladas, coloquei um loop que usa todas as funções, na ord
 No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e como fica após usar as funções acma:
 
 ![My Image](Exemplo.png)
+*Esquerda*: imagem original, com régua de escala no lado esquerdo, uma faixa preta em cima e duas folhas de planta na mesma imagem. *Direita*: Cada folha separada em um arquivo diferente e transformadas em Preto e Branco, ao final do processamento.
 
 ---
 
