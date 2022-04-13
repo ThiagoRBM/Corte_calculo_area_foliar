@@ -15,7 +15,7 @@ Após as funções isoladas, coloquei um loop que usa todas as funções, na ord
 
 No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e como fica após usar as funções acma:
 
-![My Image](Exemplo.JPG)
+![My Image](Exemplo.png)
 
 ---
 
