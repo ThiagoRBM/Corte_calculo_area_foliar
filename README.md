@@ -2,7 +2,8 @@
 Processa imagens de folhas escaneadas. Limpa as imagens, corta (caso haja mais de uma folha no mesmo arquivo), cria máscara em preto e branco e salva automaticamente. Calcula as áreas foliares (em cm2) e salva em arquivo .txt
 
 Script feito por causa de demandas de conhecidos. Dividido em **duas partes**.
-##A primeira parte é para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
+
+## A primeira parte é para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
 
 1. Criar uma máscara em Preto e Branco a partir da imagem colorida: **CortePB**
 2. Cortar objetos que servem de escala para a imagem. No caso que vivenciei, algumas imagens tinham uma régua de 30cm no lado esquerdo, que foi escaneada juntamente com as folhas para servir de escala. Essa funcao retira a régua da imagem. Função: **corteRegua**
@@ -16,4 +17,4 @@ No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e c
 
 ---
 
-##A segunda parte
+## A segunda parte
