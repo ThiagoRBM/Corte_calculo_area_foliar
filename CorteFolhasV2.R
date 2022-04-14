@@ -94,7 +94,7 @@ corteRegua = function(Imagem, LadoRegua, pincel= 3) {
   
   corte=0
   
-  SomaPixelsVertical= SomaPixelsVertical[c(1:(length(SomaPixelsVertical)*0.2))] ## aqui,
+  SomaPixelsVertical= SomaPixelsVertical[c(1:(length(SomaPixelsVertical)*0.15))] ## aqui,
   ## restringindo o vetor com as somas de pixel para 6% do tamanho dele
   ## para melhorar as chances de considerar apenas a área que a régua está na
   ## parte logo abaixo
@@ -137,7 +137,7 @@ corteRegua = function(Imagem, LadoRegua, pincel= 3) {
 ## e o usa para cortar a imagem (se estiver do lado esquerdo, corta do lado esquerdo, se do direito,
 ## corta do lado direito). Não mexer dentro da função
 
-TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", pincel= 11)
+TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", pincel= 0)
 ## na funcao acima, o ultimo comando indica o lado que esta o objeto que serve como escala
 ## se o argumento nao for colocado (ou tiver a palavra "esquerda"), a funcao vai rodar por
 ## padrao considerando que o objetco está no lado esquerdo da imagem
@@ -145,7 +145,7 @@ TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", pincel= 11)
 ## essa função serve para tirar "sujeiras" nas imagens, como pixels isolados ou "cantos" nas imagens
 ## quanto maior for o valor do pincel, mais coisa é considerada "sujeira". Se for muito grande,
 ## pode reitrar uma área importante da folha e subestimar a área no cálculo. O padrão é um pincel
-## de 3, mas é recomendado testar vários tamanhos (pode ser usado o valor de 0)
+## de 3, mas é recomendado testar vários tamanhos (pode ser usado o valor de 0) e aí nada é retirado
 display(TESTE2) ## visualizar imagem sem a régua de escala
 
 ###### FUNCAO PARA RETIRAR FAIXAS QUE TENHAM APARECIDO DURANTE O ESCANEAMENTO (E.G. QUANDO ###### 
@@ -244,9 +244,28 @@ selecOBJT= function(ImgNumerada, NObj){
   corte= ImgNumerada[c(minY : maxY),
                      c(minX : maxX)]
   
-  return(corte)
-
+  mt= matrix(nrow= nrow(corte), ncol= ncol(corte))
+  for(i in 1:nrow(corte)){ ## criando uma matriz substituindo tudo o que não seja o objeto
+    ## especificado em "n" / "num" por 0
+    
+    for(j in 1:ncol(corte)){
+      
+      if(corte[i,j] == num){
+        
+        mt[i,j] = num
+        #print("numero")
+        
+      } else{
+        
+        mt[i,j] = 0
+        
+      }
+      
+    }
+    
+  }
   
+  return(mt)
 } ## funcao para cortar a imagem
 ## para cada um dos objetos da imagem numerada ImgNumerada é a IMAGEM
 ## com os objetos numerados obtidos com a funcao "bwlabel" acima
@@ -254,7 +273,7 @@ selecOBJT= function(ImgNumerada, NObj){
 ## área (em pixels) obtidos com a funcao "obJetosNumero", acima.
 ## Não mexer dentro da função
 
-TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[1])
+TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[3])
 display(TESTE4) ## testando com uma imagem apenas, no segundo argumento
 ## para cortar outra folha, mudar o "[1]" por algum outro numero
 ## para cortar todas as folhas de uma vez, ver loop logo abaixo
