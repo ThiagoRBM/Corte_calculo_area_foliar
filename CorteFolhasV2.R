@@ -273,7 +273,7 @@ selecOBJT= function(ImgNumerada, NObj){
 ## área (em pixels) obtidos com a funcao "obJetosNumero", acima.
 ## Não mexer dentro da função
 
-TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[3])
+TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[1])
 display(TESTE4) ## testando com uma imagem apenas, no segundo argumento
 ## para cortar outra folha, mudar o "[1]" por algum outro numero
 ## para cortar todas as folhas de uma vez, ver loop logo abaixo
