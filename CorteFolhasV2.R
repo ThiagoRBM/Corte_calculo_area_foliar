@@ -74,7 +74,7 @@ display(TESTE)
 #### juntamente com as folhas, rodar daqui para baixo. Para funcionar, precisa ser um objeto comprido
 #### de preferência do tamanho do suporte em que estão as folhas, como no exemplo das imagens
 
-corteRegua = function(Imagem, LadoRegua, pincel= 3) {
+corteRegua = function(Imagem, LadoRegua, tamanhoRegua= 0.18, pincel= 3) {
   
   SomaPixelsVertical= as.numeric("")
   for(i in 1:nrow(Imagem)){
@@ -94,7 +94,7 @@ corteRegua = function(Imagem, LadoRegua, pincel= 3) {
   
   corte=0
   
-  SomaPixelsVertical= SomaPixelsVertical[c(1:(length(SomaPixelsVertical)*0.15))] ## aqui,
+  SomaPixelsVertical= SomaPixelsVertical[c(1:(length(SomaPixelsVertical)*tamanhoRegua))] ## aqui,
   ## restringindo o vetor com as somas de pixel para 6% do tamanho dele
   ## para melhorar as chances de considerar apenas a área que a régua está na
   ## parte logo abaixo
@@ -137,10 +137,13 @@ corteRegua = function(Imagem, LadoRegua, pincel= 3) {
 ## e o usa para cortar a imagem (se estiver do lado esquerdo, corta do lado esquerdo, se do direito,
 ## corta do lado direito). Não mexer dentro da função
 
-TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", pincel= 0)
+TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", tamanhoRegua= 0.18, pincel= 3)
 ## na funcao acima, o ultimo comando indica o lado que esta o objeto que serve como escala
 ## se o argumento nao for colocado (ou tiver a palavra "esquerda"), a funcao vai rodar por
 ## padrao considerando que o objetco está no lado esquerdo da imagem
+## argumento tamanhoRegua: mais ou menos a % da imagem que tem a régua, 15% é um valor que funciona bem
+## e é o padrão, mas pode ser aumentado ou diminuído. Caso essa função de corte de régua tire um pedaço da folha,
+## diminuir o valor padrão. Caso ainda sobre um pedaço da régua, aumentar o valor.
 ## o último argumento: pincel, diz o tamanho do "kern" usado na funcao "erode" (do pacote EBImage)
 ## essa função serve para tirar "sujeiras" nas imagens, como pixels isolados ou "cantos" nas imagens
 ## quanto maior for o valor do pincel, mais coisa é considerada "sujeira". Se for muito grande,
@@ -273,7 +276,7 @@ selecOBJT= function(ImgNumerada, NObj){
 ## área (em pixels) obtidos com a funcao "obJetosNumero", acima.
 ## Não mexer dentro da função
 
-TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[1])
+TESTE4= selecOBJT(ImagemNumerada, numeracaoObjetos[3])
 display(TESTE4) ## testando com uma imagem apenas, no segundo argumento
 ## para cortar outra folha, mudar o "[1]" por algum outro numero
 ## para cortar todas as folhas de uma vez, ver loop logo abaixo
@@ -325,7 +328,7 @@ for(ARQUIVO in 1:length(file.namesF)){
   
   ImgPB= cortePB(CaminhoImg, threshMin= 0.30, threshMax= 0.65)
   
-  ImgCorteRegua= corteRegua(Imagem= ImgPB, LadoRegua= "esquerda")
+  ImgCorteRegua= corteRegua(Imagem= ImgPB, LadoRegua= "esquerda", tamanhoRegua= 0.18, pincel= 3)
   
   ImgCorteFaixa= corteFaixa(Imagem= ImgCorteRegua, PosicaoFaixa="cima")
   
