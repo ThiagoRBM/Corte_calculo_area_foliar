@@ -17,7 +17,7 @@ file.namesF <- list.files(pasta, pattern = "*.jpg",
 
 ###### FUNCAO PARA TRANSFORMAR A IMAGEM EM PRETO E BRANCO ######
 
-cortePB= function(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 3){
+cortePB= function(CaminhoImg, threshMin= 0.30, threshMax= 0.65){
   
   imgBruta= readImage(CaminhoImg) ## carregando a figura
   #display(imgBruta)
@@ -62,11 +62,10 @@ cortePB= function(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 3){
 } ## função que transforma
 ## a imagem colorida em preto e branco. Não mexer dentro da função
 
-TESTE= cortePB(CaminhoImg, threshMin= 0.30, threshMax= 0.65, pincel= 11) ## colocar um valor mínimo e máximo
+TESTE= cortePB(CaminhoImg, threshMin= 0.30, threshMax= 0.65) ## colocar um valor mínimo e máximo
 ## entre 0 e 1 para procurar valores limites (para definir o que é preto e branco) na imagem
 ## se não tiver certeza do que usar, deixar com os valores padrão (ou sem esses argumentos),
 ## que funcionam bem para folhas na maioria das vezes.
-## o ultimo argumento, "pincel", serve para tirar irregularidades
 display(TESTE)
 
 ###### FUNCAO PARA RETIRAR OBJETOS QUE SIRVAM DE ESCALA, COMO RÉGUAS ###### 
@@ -75,7 +74,7 @@ display(TESTE)
 #### juntamente com as folhas, rodar daqui para baixo. Para funcionar, precisa ser um objeto comprido
 #### de preferência do tamanho do suporte em que estão as folhas, como no exemplo das imagens
 
-corteRegua = function(Imagem, LadoRegua) {
+corteRegua = function(Imagem, LadoRegua, pincel= 3) {
   
   SomaPixelsVertical= as.numeric("")
   for(i in 1:nrow(Imagem)){
@@ -127,7 +126,8 @@ corteRegua = function(Imagem, LadoRegua) {
 
   if(grepl("dir", LadoRegua, ignore.case=TRUE)){return(rotate(Imagem,180))}
   
-  Imagem= erode(Imagem, kern= makeBrush(size= 7, shape="Gaussian", ))
+  if(pincel > 0 ){
+  Imagem= erode(Imagem, kern= makeBrush(size= pincel, shape="Gaussian", ))}
   
   return(Imagem)
   print("Régua removida")
@@ -137,10 +137,15 @@ corteRegua = function(Imagem, LadoRegua) {
 ## e o usa para cortar a imagem (se estiver do lado esquerdo, corta do lado esquerdo, se do direito,
 ## corta do lado direito). Não mexer dentro da função
 
-TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda")
+TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", pincel= 11)
 ## na funcao acima, o ultimo comando indica o lado que esta o objeto que serve como escala
 ## se o argumento nao for colocado (ou tiver a palavra "esquerda"), a funcao vai rodar por
 ## padrao considerando que o objetco está no lado esquerdo da imagem
+## o último argumento: pincel, diz o tamanho do "kern" usado na funcao "erode" (do pacote EBImage)
+## essa função serve para tirar "sujeiras" nas imagens, como pixels isolados ou "cantos" nas imagens
+## quanto maior for o valor do pincel, mais coisa é considerada "sujeira". Se for muito grande,
+## pode reitrar uma área importante da folha e subestimar a área no cálculo. O padrão é um pincel
+## de 3, mas é recomendado testar vários tamanhos (pode ser usado o valor de 0)
 display(TESTE2) ## visualizar imagem sem a régua de escala
 
 ###### FUNCAO PARA RETIRAR FAIXAS QUE TENHAM APARECIDO DURANTE O ESCANEAMENTO (E.G. QUANDO ###### 
