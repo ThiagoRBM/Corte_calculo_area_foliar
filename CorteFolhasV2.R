@@ -4,10 +4,8 @@ library(EBImage)
 
 ###### DEFINIR diretório onde estão as imagens #####
 
-pasta= "C:/Users/HP/Google Drive/R/gitCorteFolhas/" # colocar aqui a pasta com a espécie que
-## vc quer analisar, 
-## mas colocar o endereço ******* SEM o "/ind" *******, 
-## porque vou usar o "/ind" logo abaixo
+pasta= "C:/Users/HP/Google Drive/R/gitCorteFolhas/" # colocar aqui a pasta com as fotos que
+## vc quer analisar de preferência em formato ".jpg"
 
 file.namesF <- list.files(pasta, pattern = "*.jpg",
                           full.names = TRUE, recursive= FALSE) ## selecionando só o que é ".jpg"
