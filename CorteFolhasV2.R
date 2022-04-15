@@ -210,7 +210,7 @@ display(TESTE3) ## visualizar imagem sem a régua de escala
 #### 
 #### 
 
-obJetosNumero= function(Imagem){ 
+objetosNumero= function(Imagem){ 
   
   label = bwlabel(Imagem)
   caract= sort(table(label), decreasing= TRUE)[-1]
@@ -226,7 +226,7 @@ obJetosNumero= function(Imagem){
 ## e numerar cada um e já retirar os objetos que não são folha (defeitos na foto e etc). Não mexer
 ## dentro da função
 
-numeracaoObjetos= obJetosNumero(TESTE3)
+numeracaoObjetos= objetosNumero(TESTE3)
 numeracaoObjetos ## objetos encontrados (desconsiderando sujeiras)
 
 ImagemNumerada= bwlabel(TESTE3) ## contagem de objetos
@@ -330,7 +330,7 @@ for(ARQUIVO in 1:length(file.namesF)){
   
   ImgCorteFaixa= corteFaixa(Imagem= ImgCorteRegua, PosicaoFaixa="cima")
   
-  numeracaoObjetos= obJetosNumero(ImgCorteFaixa)
+  numeracaoObjetos= objetosNumero(ImgCorteFaixa)
   ImagemNumerada= bwlabel(ImgCorteFaixa)
   print(paste0("Objetos numerados, ", length(numeracaoObjetos), " folhas encontradas"))
   
