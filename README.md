@@ -7,7 +7,6 @@ Script feito por causa de demandas de amigos. Dividido em **duas partes**.
 ### Primeira parte: para processamento de imagens de folhas de plantas escaneadas. Contém funções para:
 *arquivo: <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/CorteFolhasV2.R">CorteFolhasV2.R</a>*
 
-
 1. **cortePB**: Criar uma máscara em Preto e Branco a partir da imagem colorida.
 2. **corteRegua**: Cortar objetos que servem de escala para a imagem. No caso que vivenciei, algumas imagens tinham uma régua de 30cm no lado esquerdo, que foi escaneada juntamente com as folhas para servir de escala. Essa funcao retira a régua da imagem.
 3. **corteFaixa**: Cortar faixas brancas da imagem. No caso que vivenciei, algumas imagens escaneadas tinham faixas em branco. Isso acontece quando o suporte para as folhas (que fica entre as folhas propriamente ditas e o vidro do escaner) é menor que a área do vidro do escaner. Ao criar a máscara em preto e branco, essas faixas ficam brancas e podem atrapalhar no cálculo da área foliar. Essa função corta essas faixas *(por enquanto, corta só faixas que estejam em cima ou embaixo nas imagens, não dos lados, mas posso adicionar essa funcionalidade)*.
@@ -28,3 +27,5 @@ No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e c
 *arquivo: <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/CalculoAreaFoliar.R">CalculoAreaFoliar.R</a>*
 
 1. **areaFoliar**: Calcula a área foliar (em cm²) e salva em um arquivo ".txt". É **importante** usar o valor de **DPI** (*dots per inch*) correto para o cálculo. Quando as imagens forem ser escaneadas, geralmente o usuário pode escolher esse valor. Se não souber qual é ele, clicar com o botão direito em uma imagem e ir em "detalhes". Lá esse valor é informado. **Contudo**, se a imagem foi processada em algum programa, dependendo do programa e do que tiver sido feito, esse valor de DPI terá sido alterado e para o cálculo correto, precisa ser usado o valor **inicial**, que foi usado para o escaneamento da imagem. O arquivo gerado tem uma coluna com o nome do arquivo onde o cálculo foi feito e uma coluna com a área, em cm² e fica salvo **no mesmo diretório** em que as imagens em preto e branco estiverem.
+
+#### *O arquivo: <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/FuncoesScripts.R">FuncoesScripts.R</a> contem todas as funções dos scripts acima separadas, sem exemplos nem explicações, caso seja útil*. Elas podem ser carregadas diratamente em outro script usando o comando *source("caminho_em_que_está_salvo")
