@@ -150,7 +150,7 @@ corteFaixa = function(Imagem, PosicaoFaixa) {
   
 }
 
-obJetosNumero= function(Imagem){ 
+objetosNumero= function(Imagem){ 
   
   label = bwlabel(Imagem)
   caract= sort(table(label), decreasing= TRUE)[-1]
