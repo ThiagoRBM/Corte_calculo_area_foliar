@@ -29,8 +29,6 @@ No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e c
 
 1. **areaFoliar**: Calcula a área foliar (em cm²) e salva em um arquivo ".txt". É **importante** usar o valor de **DPI** (*dots per inch*) correto para o cálculo. Quando as imagens forem ser escaneadas, geralmente o usuário pode escolher esse valor. Se não souber qual é ele, clicar com o botão direito em uma imagem e ir em "detalhes". Lá esse valor é informado. **Contudo**, se a imagem foi processada em algum programa, dependendo do programa e do que tiver sido feito, esse valor de DPI terá sido alterado e para o cálculo correto, precisa ser usado o valor **inicial**, que foi usado para o escaneamento da imagem. O arquivo gerado tem uma coluna com o nome do arquivo onde o cálculo foi feito e uma coluna com a área, em cm² e fica salvo **no mesmo diretório** em que as imagens em preto e branco estiverem.
 
-#### *O arquivo: <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/FuncoesScripts.R">FuncoesScripts.R</a> contem todas as funções dos scripts acima separadas, sem exemplos nem explicações, caso seja útil*. Elas podem ser carregadas diratamente em outro script usando o comando *source("caminho_em_que_está_salvo")*
-
 ---
 
 ### A terceira parte: para extração do contorno das imagens
@@ -41,3 +39,6 @@ No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e c
 
 ![My Image](Exemplo2.png)
 *Esquerda*: Imagem original, com régua de escala no lado esquerdo, uma faixa preta em cima e duas folhas de planta na mesma imagem. Reparar em quadrados de papel com numeração inicial das folhas *Direita*: Contorno das duas folhas **com os quadrado de numeração, régua e faixa removidos**, ao final do processamento.
+
+
+#### *O arquivo: <a href="https://github.com/ThiagoRBM/Corte_calculo_area_foliar/blob/main/FuncoesScripts.R">FuncoesScripts.R</a> contem todas as funções dos scripts acima separadas, sem exemplos nem explicações, caso seja útil*. Elas podem ser carregadas diratamente em outro script usando o comando *source("caminho_em_que_está_salvo")*.
