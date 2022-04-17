@@ -55,8 +55,9 @@ cortePB= function(CaminhoImg, threshMin= 0.30, threshMax= 0.65){
   fig[fig < thresh] <- 0	
   fig[fig >= thresh] <- 1 ### usando o vaor de threshold para criar máscara binária (P & B)
  
-  return(fig)
   print("Máscara criada")
+  return(fig)
+  
 } ## função que transforma
 ## a imagem colorida em preto e branco. Não mexer dentro da função
 
@@ -72,73 +73,99 @@ display(TESTE)
 #### juntamente com as folhas, rodar daqui para baixo. Para funcionar, precisa ser um objeto comprido
 #### de preferência do tamanho do suporte em que estão as folhas, como no exemplo das imagens
 
-corteRegua = function(Imagem, LadoRegua, tamanhoRegua= 0.18, pincel= 3) {
-  
-  SomaPixelsVertical= as.numeric("")
-  for(i in 1:nrow(Imagem)){
-    num= i
-    SomaPixelsVertical[i]= sum(Imagem[num,])
-    } ## calculo da soma das linhas (eixo X) da imagem. Objetos para escala, como régua
+corteRegua = function(Imagem,
+                      LadoRegua,
+                      Regua,
+                      tamanhoRegua = 0.18,
+                      pincel = 3) {
+  SomaPixelsVertical = as.numeric("")
+  for (i in 1:nrow(Imagem)) {
+    num = i
+    SomaPixelsVertical[i] = sum(Imagem[num, ])
+  } ## calculo da soma das linhas (eixo X) da imagem. Objetos para escala, como régua
   ## são compridos, então terão soma grande, provavelmente maior que a das folhas
   
-  
-  if(missing(LadoRegua)){LadoRegua= "esquerda"} ## comportamento "padrão" é procurar a 
+  if (missing(LadoRegua)) {
+    LadoRegua = "esquerda"
+  } ## comportamento "padrão" é procurar a
   ## régua no lado ESQUERDO da imagem.
   
-  if(grepl("dir", LadoRegua, ignore.case=TRUE)){
-    Imagem=rotate(Imagem, 180)
-    SomaPixelsVertical= rev(SomaPixelsVertical)
+  if (missing(Regua)) {
+    Regua = "cortar"
+  } ## comportamento "padrão" CORTAR a regua da imagem
+  
+  if (grepl("dir", LadoRegua, ignore.case = TRUE)) {
+    Imagem = rotate(Imagem, 180)
+    SomaPixelsVertical = rev(SomaPixelsVertical)
   }
   
-  corte=0
+  corte = 0
   
-  SomaPixelsVertical= SomaPixelsVertical[c(1:(length(SomaPixelsVertical)*tamanhoRegua))] ## aqui,
+  SomaPixelsVertical = SomaPixelsVertical[c(1:(length(SomaPixelsVertical) *
+                                                 tamanhoRegua))] ## aqui,
   ## restringindo o vetor com as somas de pixel para 6% do tamanho dele
   ## para melhorar as chances de considerar apenas a área que a régua está na
   ## parte logo abaixo
   
-  maxRegua=ifelse(length(which(SomaPixelsVertical == max(SomaPixelsVertical)))==1,
-                  which(SomaPixelsVertical == max(SomaPixelsVertical)), 
-                  0) 
-  ## índice do valor máximo se tiver 1 pixel de largura (será a régua), caso contrário, provavelmente é 
+  maxRegua = ifelse(length(which(
+    SomaPixelsVertical == max(SomaPixelsVertical)
+  )) == 1,
+  which(SomaPixelsVertical == max(SomaPixelsVertical)),
+  0)
+  ## índice do valor máximo se tiver 1 pixel de largura (será a régua), caso contrário, provavelmente é
   ## parte de folha e será ignorado, recebendo o valor de 0
   
-  if(maxRegua != 0){
-    
-    ReguaFundo= sort(c(maxRegua,
-                       which(SomaPixelsVertical < length(SomaPixelsVertical)*0.5))) ## vetor com índices de 
+  if (maxRegua != 0) {
+    ReguaFundo = sort(c(maxRegua,
+                        which(
+                          SomaPixelsVertical < length(SomaPixelsVertical) * 0.5
+                        ))) ## vetor com índices de
     ## valores baixos E o valor da régua, ordenado de forma crescente
-    ReguaUm= which(ReguaFundo == maxRegua)+3 ## pegando o índice do valor seguinte ao máximo (que será o primeiro
+    ReguaUm = which(ReguaFundo == maxRegua) + 3 ## pegando o índice do valor seguinte ao máximo (que será o primeiro
     ## valor pequeno depois da régua)
-    
-    ReguaUm= ifelse(ReguaUm >= length(ReguaFundo), 
-                    length(ReguaFundo),
-                    ReguaUm)[1]
-    
-    corte= seq(from=1, to=ReguaFundo[ReguaUm]) ## criando uma sequência de 1 até o primeiro valor pequeno
+    ReguaUm = ifelse(ReguaUm >= length(ReguaFundo),
+                     length(ReguaFundo),
+                     ReguaUm)[1]
+    corte = seq(from = 1, to = ReguaFundo[ReguaUm]) ## criando uma sequência de 1 até o primeiro valor pequeno
     ## depois da régua, usando como base os índices obtidos acima
   }
+  
   #print(i)
-  if(sum(corte) != 0){ ## caso não tenha nada para cortar
-    Imagem = as.matrix(Imagem[-corte,])} else {Imagem= Imagem}
-
-  if(grepl("dir", LadoRegua, ignore.case=TRUE)){return(rotate(Imagem,180))}
+  if ((sum(corte) != 0) &
+      grepl("cort", Regua, ignore.case = TRUE)) {
+    ## caso não tenha nada para cortar
+    Imagem = as.matrix(Imagem[-corte, ])
+    print("Régua removida")
+  }
+  else if ((sum(corte) != 0) &
+           grepl("apag", Regua, ignore.case = TRUE)) {
+    Imagem[corte, ] = 0
+    print("Régua apagada")
+  }
+  else {
+    Imagem = Imagem
+    print("Sem régua na imagem")
+  }
   
-  if(pincel > 0 ){
-  Imagem= erode(Imagem, kern= makeBrush(size= pincel, shape="Gaussian", ))}
+  if (grepl("dir", LadoRegua, ignore.case = TRUE)) {
+    return(rotate(Imagem, 180))
+  }
   
+  if (pincel > 0) {
+    Imagem = erode(Imagem, kern = makeBrush(size = pincel, shape = "Gaussian",))
+  }
   return(Imagem)
-  print("Régua removida")
-  
 } ## essa funcao retorna um valor de corte (na variável "corte"), que é o índice  que tem o valor máximo da régua
 ## verifica se o índice está do lado direito ou esquerdo da figura
 ## e o usa para cortar a imagem (se estiver do lado esquerdo, corta do lado esquerdo, se do direito,
 ## corta do lado direito). Não mexer dentro da função
 
-TESTE2= corteRegua(Imagem= TESTE, LadoRegua= "esquerda", tamanhoRegua= 0.18, pincel= 3)
+TESTE2= corteRegua(Imagem= TESTE, Regua= "cortar", LadoRegua= "esquerda", tamanhoRegua= 0.18, pincel= 3)
 ## na funcao acima, o ultimo comando indica o lado que esta o objeto que serve como escala
 ## se o argumento nao for colocado (ou tiver a palavra "esquerda"), a funcao vai rodar por
 ## padrao considerando que o objetco está no lado esquerdo da imagem
+## argumento Regua: se a regua deve ser apagada (substituida por pixel pretos) ou cortada (pixels da regua removidos
+## deixando a imagem final menor que a inicial). O padrão é cortar
 ## argumento tamanhoRegua: mais ou menos a % da imagem que tem a régua, 15% é um valor que funciona bem
 ## e é o padrão, mas pode ser aumentado ou diminuído. Caso essa função de corte de régua tire um pedaço da folha,
 ## diminuir o valor padrão. Caso ainda sobre um pedaço da régua, aumentar o valor.
@@ -152,55 +179,67 @@ display(TESTE2) ## visualizar imagem sem a régua de escala
 ###### FUNCAO PARA RETIRAR FAIXAS QUE TENHAM APARECIDO DURANTE O ESCANEAMENTO (E.G. QUANDO ###### 
 ###### O SUPORTE PARA AS FOLHAS É MENOR QUE O VIDRO DO SCANNER)  
 
-corteFaixa = function(Imagem, PosicaoFaixa) {
-  
-  SomaPixelsHorizontal= as.numeric("")
-  for(i in 1:ncol(Imagem)){
-    num= i
-    SomaPixelsHorizontal[i]= sum(Imagem[,num]) ## somando as linhas na horizontal
+corteFaixa = function(Imagem, PosicaoFaixa, Faixa) {
+  SomaPixelsHorizontal = as.numeric("")
+  for (i in 1:ncol(Imagem)) {
+    num = i
+    SomaPixelsHorizontal[i] = sum(Imagem[, num]) ## somando as linhas na horizontal
   } ## funcao para calcular as somas das colunas (eixo Y), mesmo raciocínio
   ## usado para os objetos de escala, na função acima
   
-  
-  if(missing(PosicaoFaixa)){PosicaoFaixa= "cima"} ## comportamento "padrão" é procurar a 
+  if (missing(PosicaoFaixa)) {
+    PosicaoFaixa = "cima"
+  } ## comportamento "padrão" é procurar a
   ## faixa no lado DE CIMA da imagem.
   
-  if(grepl("bai", PosicaoFaixa, ignore.case=TRUE)){
-    Imagem=rotate(Imagem, 180)
-    SomaPixelsHorizontal= rev(SomaPixelsHorizontal)
-  } 
+  if (missing(Faixa)) {
+    Faixa = "cortar"
+  } ## comportamento "padrão" é CORTAR a faixa da imagem
   
+  if (grepl("bai", PosicaoFaixa, ignore.case = TRUE)) {
+    Imagem = rotate(Imagem, 180)
+    SomaPixelsHorizontal = rev(SomaPixelsHorizontal)
+  }
   
-  colCorte= as.numeric("")
-  x=0
-  for(i in 1:length(SomaPixelsHorizontal)){
-    
-    if(SomaPixelsHorizontal[i] >= nrow(Imagem)*0.95){
-      x= x+1
-      colCorte[x]= i
-      
+  colCorte = as.numeric("")
+  x = 0
+  for (i in 1:ceiling(length(SomaPixelsHorizontal) * 0.2)) {
+    if (SomaPixelsHorizontal[i] >= nrow(Imagem) * 0.75) {
+      x = x + 1
+      colCorte[x] = i
     }
-    
   }
   
-  if(!is.na(sum(colCorte))){
-    Imagem = as.matrix(Imagem[,-c(1:max(colCorte+5))])
+  if (!(is.na(sum(colCorte))) &
+      grepl("cort", Faixa, ignore.case = TRUE)) {
+    Imagem = as.matrix(Imagem[, -c(1:max(colCorte + 5))])
+    print("Faixa removida")
+  }
+  else if (!(is.na(sum(colCorte))) &
+           grepl("apag", Faixa, ignore.case = TRUE)) {
+    Imagem[, c(1:max(colCorte + 5))] = 0
+    print("Faxa apagada")
+  }
+  else{
+    Imagem = Imagem
   }
   
-  if(grepl("bai", PosicaoFaixa, ignore.case=TRUE)){
-    return(rotate(Imagem,180))} 
+  if (grepl("bai", PosicaoFaixa, ignore.case = TRUE)) {
+    return(rotate(Imagem, 180))
+  }
   
   return(Imagem)
-  print("Faixa removida")
-  
 } ## funcao para tirar faixas contínuas da imagem
 ## na parte inferior ou superior. A faixa deve ocupar a imagem na horizontal quase completamente para 
 ## a funcao funcionar corretamente. Não mexer dentro da função
 
 
-TESTE3= corteFaixa(TESTE2, PosicaoFaixa="cima")
+TESTE3= corteFaixa(TESTE2, Faixa= "cortar", PosicaoFaixa="cima")
 ## na funcao acima, no argumento PosicaoFaixa, se estiver com "baixo", a faixa será procurada na parte
 ## de baixo da imagem, se estiver com "cima" ou vazio, a faixa será procurada na parte de cima da imagem
+## ## argumento Faixa: se a faixa deve ser apagada (substituida por pixel pretos) ou cortada 
+## (pixels da regua removidos). O padrão é cortar.
+## deixando a imagem final menor que a inicial)
 display(TESTE3) ## visualizar imagem sem a régua de escala
 
 #### APÓS A FOTO TER SIDO TRATADA (OU SEJA, OS OBJETOS QUE SERVE COMO ESCALA RETIRADOS E AS FAIXAS)
