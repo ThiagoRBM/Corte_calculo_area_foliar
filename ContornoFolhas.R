@@ -35,9 +35,10 @@ removerSujeira = function(ImagemNumerada, VetorNumeros) {
         else{mt[x,linha] = 0}
       } 
       
-    } else{mt[x,length(vals)]=0}
+    } else{mt[x,c(1:length(vals))] = rep(0, length(vals))}
   }
   print("imagem limpa")
+  mt[is.na(mt)] = 0
   return(mt)
 }
 
@@ -76,14 +77,14 @@ extrairContorno= function(imagemLimpa){
     
     
   }
-  print("controno extraido")
+  print("contorno extraido")
+  mt[is.na(mt)] = 0
   return(mt)
   
 }
 
 TESTE2= extrairContorno(TESTE)
 display(TESTE2)
-
 
 ## abaixo: exemplo de uso das funcoes em sequência, em todas as imagens de uma pasta
 ## contornos extraídos serão salvos em uma subpasta, onde estão as imagens originais,
@@ -100,22 +101,40 @@ for(i in 1:length(file.namesF)){
   
   CaminhoImg= file.namesF[i]
   
-  PB= cortePB(file.namesF[i])
+  PB= cortePB(CaminhoImg)
   PB1= corteRegua(PB, Regua="apaga")
   PB2= corteFaixa(PB1, Faixa="apaga")
   
   ImagemNumerada= bwlabel(PB2)
   obj= objetosNumero(PB2)
   
-  TESTE= removerSujeira(ImagemNumerada, obj)
-  TESTE2= extrairContorno(TESTE)
+  semSujeira= removerSujeira(ImagemNumerada, obj)
+  contorno= extrairContorno(semSujeira)
   
   caminho=  paste0(pasta,"/Contornos/",
                    gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')), 
                    ".jpg") 
   
-  writeImage(TESTE2, ## aqui, salvando a imagem
+  writeImage(contorno, ## aqui, salvando a imagem
              caminho,
              quality = 100)
+ 
+  ## abaixo, salvando as imagens como arquivos texto, com as coordenadas do contorno. Valors > 0 são
+  ## as coordenadas. Caso não desejar salvar, comentar daqui para baixo (não incluindo o "}")
+   
+  tab= contorno %>% 
+    melt() %>% 
+    rename(X= Var1,
+           Y= Var2,
+           Obj= value) %>% 
+    filter(Obj > 0)
   
+  caminho2=  paste0(pasta,"/Contornos/",
+                   gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')), 
+                   ".txt") 
+  
+  readr::write_delim(tab, 
+                     caminho2, delim = ";", col_names= TRUE)
+  print(paste0("tabela ", gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')), " salva"))
+  cat("\n\n")
 }

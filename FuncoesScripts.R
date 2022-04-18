@@ -50,8 +50,7 @@ cortePB = function(CaminhoImg,
   fig = imageData(channel(imgBruta, mode = "blue"))
   fig <- 1 - fig
   fig[fig < thresh] <- 0
-  fig[fig >= thresh] <-
-    1 ### usando o vaor de threshold para criar máscara binária (P & B)
+  fig[fig >= thresh] <- 1 ### usando o vaor de threshold para criar máscara binária (P & B)
   
   print("Máscara criada")
   return(fig)
@@ -181,10 +180,11 @@ corteFaixa = function(Imagem, PosicaoFaixa, Faixa) {
   else if (!(is.na(sum(colCorte))) &
            grepl("apag", Faixa, ignore.case = TRUE)) {
     Imagem[, c(1:max(colCorte + 5))] = 0
-    print("Faxa apagada")
+    print("Faixa apagada")
   }
   else{
     Imagem = Imagem
+    print("Sem faixa na imagem")
   }
   
   if (grepl("bai", PosicaoFaixa, ignore.case = TRUE)) {
@@ -305,7 +305,7 @@ extrairContorno= function(imagemLimpa){
     
     
   }
-  print("controno extraido")
+  print("contorno extraido")
   mt[is.na(mt)] = 0
   return(mt)
   

@@ -218,10 +218,11 @@ corteFaixa = function(Imagem, PosicaoFaixa, Faixa) {
   else if (!(is.na(sum(colCorte))) &
            grepl("apag", Faixa, ignore.case = TRUE)) {
     Imagem[, c(1:max(colCorte + 5))] = 0
-    print("Faxa apagada")
+    print("Faixa apagada")
   }
   else{
     Imagem = Imagem
+    print("Sem faixa na imagem")
   }
   
   if (grepl("bai", PosicaoFaixa, ignore.case = TRUE)) {
