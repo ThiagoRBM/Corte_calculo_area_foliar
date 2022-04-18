@@ -37,6 +37,8 @@ No repositório existem imagens coloridas de exemplo. Abaixo, imagem inicial e c
 1. **removerSujeira**: remove sujeiras (pixels brancos isolados) de uma imagem em preto e branco. A função recebe uma imagem em preto com os objetos numerados e um vetor com os números que sejam referentes aos objetos de interesse. Pode ser usado por exemplo uma matriz resultado da função **bwlabel** como imagem numerada com o resultado da função **objetosNumero**, explicado acima, como o vetor. A imagem resultado de **bwlabel** vai identificar qualquer pixel isolado como um objeto novo (sendo os pixels unidos considerados como um mesmo objeto) e a funcao **objetosNumero** vai pegar só os maiores objetos e considerar como objetos "válidos". A função **removerSujeira** vai então considerar qualquer pixel que não tenha o número presente no vetor como sujeira e irá apagá-lo.
 2. **extrairContorno**: com base na função **ocontour**, extrai os contornos da imagem em preto e branco com objetos numerados (e preferencialmente limpa) e remonta a imagem.
 
+Ao final do script tem um exemplo de loop para extrair o contorno de todas as imagens (em Preto e Branco) em uma pasta, salvar em formato ".png" e salvar uma tabela equivalente com a numeraçãs dos objetos encontrados e as coordenadas dos pixel.
+
 ![My Image](Exemplo2.png)
 *Esquerda*: Imagem original, com régua de escala no lado esquerdo, uma faixa preta em cima e duas folhas de planta na mesma imagem. Reparar em quadrados de papel com numeração inicial das folhas *Direita*: Contorno das duas folhas **com os quadrado de numeração, régua e faixa removidos**, ao final do processamento.
 
