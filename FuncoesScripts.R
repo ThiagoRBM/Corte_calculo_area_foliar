@@ -270,6 +270,7 @@ removerSujeira = function(ImagemNumerada, VetorNumeros) {
     } else{mt[x,length(vals)]=0}
   }
   print("imagem limpa")
+  mt[is.na(mt)] = 0
   return(mt)
 }
 
@@ -305,6 +306,7 @@ extrairContorno= function(imagemLimpa){
     
   }
   print("controno extraido")
+  mt[is.na(mt)] = 0
   return(mt)
   
 }
