@@ -29,8 +29,9 @@ removerSujeira = function(ImagemNumerada, VetorNumeros) {
     vals= ImagemNumerada[,linha]
     if(sum(vals) > 0){
       for(x in 1:length(vals)){
-        if(vals[x] %in% names(VetorNumeros)){
-          mt[x,linha]= vals[x]
+        objt= vals[x]
+        if(objt %in% names(VetorNumeros)){
+          mt[x,linha]= objt
         } 
         else{mt[x,linha] = 0}
       } 
@@ -71,7 +72,7 @@ extrairContorno= function(imagemLimpa){
     if(nrow(df)>0){
       for(x in 1:nrow(df)){
         y=df$y[x]
-        mt[y,i]=df$obj[1]
+        mt[y,i]=unique(df$obj[df$y == y])
       }
     }else{mt[c(1:nrow(mt)),i]=0}
     

@@ -299,7 +299,7 @@ extrairContorno= function(imagemLimpa){
     if(nrow(df)>0){
       for(x in 1:nrow(df)){
         y=df$y[x]
-        mt[y,i]=df$obj[1]
+        mt[y,i]=unique(df$obj[df$y == y])
       }
     }else{mt[c(1:nrow(mt)),i]=0}
     
