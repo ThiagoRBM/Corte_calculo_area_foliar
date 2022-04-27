@@ -36,7 +36,7 @@ removerSujeira = function(ImagemNumerada, VetorNumeros) {
         else{mt[x,linha] = 0}
       } 
       
-    } else{mt[x,c(1:length(vals))] = rep(0, length(vals))}
+    } else{mt[c(0:length(vals)),linha] = rep(x=0, times=length(vals))}
   }
   print("imagem limpa")
   mt[is.na(mt)] = 0
@@ -103,7 +103,7 @@ for(i in 1:length(file.namesF)){
   CaminhoImg= file.namesF[i]
   
   PB= cortePB(CaminhoImg)
-  PB1= corteRegua(PB, Regua="apaga")
+  PB1= corteRegua(PB, Regua="apaga", pincel= 7)
   PB2= corteFaixa(PB1, Faixa="apaga")
   
   ImagemNumerada= bwlabel(PB2)
@@ -112,7 +112,7 @@ for(i in 1:length(file.namesF)){
   semSujeira= removerSujeira(ImagemNumerada, obj)
   contorno= extrairContorno(semSujeira)
   
-  caminho=  paste0(pasta,"/Contornos/",
+  caminho=  paste0(pasta,"/Contorno/",
                    gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')), 
                    ".jpg") 
   
@@ -123,19 +123,21 @@ for(i in 1:length(file.namesF)){
   ## abaixo, salvando as imagens como arquivos texto, com as coordenadas do contorno. Valors > 0 são
   ## as coordenadas. Caso não desejar salvar, comentar daqui para baixo (não incluindo o "}")
    
-  tab= contorno %>% 
-    melt() %>% 
-    rename(X= Var1,
-           Y= Var2,
-           Obj= value) %>% 
-    filter(Obj > 0)
+  # tab= contorno %>%
+  #   melt() %>%
+  #   rename(X= Var1,
+  #          Y= Var2,
+  #          Obj= value) %>%
+  #   filter(Obj > 0)
+  #   
+  # 
+  # caminho2=  paste0(pasta,"/Contorno/",
+  #                  gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')),
+  #                  ".txt")
+  # 
+  # readr::write_delim(tab,
+  #                    caminho2, delim = ";", col_names= TRUE)
   
-  caminho2=  paste0(pasta,"/Contornos/",
-                   gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')), 
-                   ".txt") 
-  
-  readr::write_delim(tab, 
-                     caminho2, delim = ";", col_names= TRUE)
   print(paste0("tabela ", gsub(".jpg", "", str_extract(CaminhoImg, '[^/]+$')), " salva"))
   cat("\n\n")
 }
